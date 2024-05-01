@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin-left: 16px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        #loading-blocker {
+            background-color: #000D;
+            color: #FFF;
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #vehicle-list {
+            flex: 1;
+        }
+
+        #update-location-section {
+            margin-bottom: 16px;
+        }
+
+        .vehicle-data-row {
+            background-color: beige;
+            border: 1px solid red;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding-bottom: 8px;
+        }
+
+        .vehicle-data-row:hover {
+            background-color: burlywood;
+            border: 1px solid blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-blocker">
+        <h1>LOADING</h1>
+    </div>
+    <div id="vehicle-list">
+
+    </div>
+    <div id="update-location-section">
+        id: <input id="id"/>
+        lat: <input id="latitude"/>
+        lon: <input id="longitude"/>
+        <button id="update-location">UPDATE</button>
+    </div>
+    <script>
+        const list = document.querySelector("#vehicle-list");
+        const idInput = document.querySelector("#id");
+        const latitudeInput = document.querySelector("#latitude");
+        const longitudeInput = document.querySelector("#longitude");
+        const updateLocationButton = document.querySelector("#update-location");
+        const loadingBlocker = document.querySelector("#loading-blocker");
+
+        const setLoading = (loading) => {
+            if(loading) {
+                loadingBlocker.style.display = "flex";
+            } else {
+                loadingBlocker.style.display = "none";
+            }
+        }
+
+        const getVehicles = async () => {
+            setLoading(true);
+            const vehicles = await fetchVehicles();
+            writeVehiclesInDOM(vehicles);
+            setLoading(false);
+        }
+
+        const fetchVehicles = async () => {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            const req = await fetch("http://localhost:8000/api/vehicles");
+            const result = await req.json();
+            return result;
+        }
+
+        const writeVehiclesInDOM = (vehicles) => {
+            list.innerHTML = "";
+            vehicles.forEach(vehicle => {
+                const div = document.createElement("div");
+                list.appendChild(div);
+                div.classList.add("vehicle-data-row");
+                div.onclick = () => {
+                    idInput.value = vehicle.id;
+                    latitudeInput.value = vehicle.lastLocationLatitude;
+                    longitudeInput.value = vehicle.lastLocationLongitude;
+                }
+                div.innerHTML += `
+                    <span>${vehicle.id}</span>
+                    <span>${vehicle.lastLocationLatitude}</span>
+                    <span>${vehicle.lastLocationLongitude}</span>
+                `
+            });
+        }
+
+        const updateVehicle = async () => {
+            setLoading(true);
+            const req = await fetch("http://localhost:8000/api/vehicle/update_location", {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: idInput.value,
+                    latitude: latitudeInput.value,
+                    longitude: longitudeInput.value,
+                }),
+            });
+            getVehicles();
+        }
+
+        updateLocationButton.onclick = updateVehicle;
+        
+        getVehicles();
+    </script>
+</body>
+</html>
