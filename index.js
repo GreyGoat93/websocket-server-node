@@ -30,7 +30,8 @@ app.put("/api/vehicle/update_location", (req, res) => {
     const longitude = req.body.longitude;
     const updatedVehicle = vehiclesData.updateVehicleLocation(id, latitude, longitude);
 
-    this.ws.sendAll("VEHICLE_UPDATED", updatedVehicle);
+    // this.ws.sendAll("VEHICLE_UPDATED", updatedVehicle);
+    this.ws.sendAll(SampleWebsocket.MESSAGE_TYPES.SENDING_ALL_VEHICLES, vehiclesData.getVehicles());
 
     res.send(updatedVehicle);
 })

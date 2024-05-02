@@ -7,6 +7,8 @@ module.exports = class Vehicle {
     speed;
     signalQuality;
     battery;
+    latitude;
+    longitude;
     lastLocationLatitude;
     lastLocationLongitude;
     lastUpdate;
@@ -20,6 +22,8 @@ module.exports = class Vehicle {
         speed,
         signalQuality,
         battery,
+        latitude,
+        longitude,
         lastLocationLatitude,
         lastLocationLongitude,
         lastUpdate,
@@ -32,13 +36,15 @@ module.exports = class Vehicle {
         this.speed = speed;
         this.signalQuality = signalQuality;
         this.battery = battery;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.lastLocationLatitude = lastLocationLatitude;
         this.lastLocationLongitude = lastLocationLongitude;
         this.lastUpdate = lastUpdate;
     }
 
     updateLocation(latitude, longitude) {
-        this.lastLocationLatitude = latitude;
-        this.lastLocationLongitude = longitude;
+        this.latitude = parseFloat(latitude);
+        this.longitude = parseFloat(longitude);
     }
 }

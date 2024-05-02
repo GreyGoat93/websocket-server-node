@@ -12,7 +12,7 @@
         }
 
         body {
-            margin-left: 16px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -33,10 +33,6 @@
 
         #vehicle-list {
             flex: 1;
-        }
-
-        #update-location-section {
-            margin-bottom: 16px;
         }
 
         .vehicle-data-row {
@@ -104,13 +100,13 @@
                 div.classList.add("vehicle-data-row");
                 div.onclick = () => {
                     idInput.value = vehicle.id;
-                    latitudeInput.value = vehicle.lastLocationLatitude;
-                    longitudeInput.value = vehicle.lastLocationLongitude;
+                    latitudeInput.value = vehicle.latitude;
+                    longitudeInput.value = vehicle.longitude;
                 }
                 div.innerHTML += `
                     <span>${vehicle.id}</span>
-                    <span>${vehicle.lastLocationLatitude}</span>
-                    <span>${vehicle.lastLocationLongitude}</span>
+                    <span>${vehicle.latitude}</span>
+                    <span>${vehicle.longitude}</span>
                 `
             });
         }
@@ -124,8 +120,8 @@
                 },
                 body: JSON.stringify({
                     id: idInput.value,
-                    latitude: latitudeInput.value,
-                    longitude: longitudeInput.value,
+                    latitude: parseFloat(latitudeInput.value),
+                    longitude: parseFloat(longitudeInput.value),
                 }),
             });
             getVehicles();
