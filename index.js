@@ -3,6 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const SampleWebsocket = require("./src/websockets/sampleWebsocket");
 const vehiclesData = require("./src/data/vehicles.data");
+const historyData = require("./src/data/history.data");
 
 const HTTP_SERVER_PORT = 8000;
 
@@ -23,6 +24,10 @@ app.get("/vehicles", (req, res) => {
 app.get("/api/vehicles", (req, res) => {
     res.send(vehiclesData.getVehicles());
 });
+
+app.get("/api/history", (req, res) => {
+    res.send(historyData.getAll());
+})
 
 app.put("/api/vehicle/update_location", (req, res) => {
     const id = req.body.id;
