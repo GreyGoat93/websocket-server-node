@@ -4,13 +4,16 @@ class HistoryData {
     histories = [];
 
     constructor() {
+        const now = new Date();
+        const hour = 1000 * 60;
+
         this.histories = [
-            new History(130, 42.001, 29.001, 90, 40, new Date().toISOString()),
-            new History(131, 42.002, 29.002, 40, 30, new Date().toISOString()),
-            new History(132, 42.003, 29.003, 60, 20, new Date().toISOString()),
-            new History(133, 42.004, 29.004, 120, 50, new Date().toISOString()),
-            new History(134, 42.005, 29.005, 150, 60, new Date().toISOString()),
-            new History(135, 42.006, 29.006, 170, 70, new Date().toISOString()),
+            new History(130, 40.854074, 29.301835, 50, 40, new Date(now.getTime() - (hour * 6)).toISOString()),
+            new History(131, 40.853755, 29.301271, 50, 10, new Date(now.getTime() - (hour * 5)).toISOString()),
+            new History(132, 40.854550, 29.300503, 140, 33, new Date(now.getTime() - (hour * 4)).toISOString()),
+            new History(133, 40.855819, 29.299070, 140, 44, new Date(now.getTime() - (hour * 3)).toISOString()),
+            new History(134, 40.856138, 29.297541, 120, 10, new Date(now.getTime() - (hour * 2)).toISOString()),
+            new History(135, 40.857041, 29.295844, 140, 20, new Date(now.getTime() - (hour * 1)).toISOString()),
         ];
     }
 

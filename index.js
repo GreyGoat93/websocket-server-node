@@ -26,7 +26,10 @@ app.get("/api/vehicles", (req, res) => {
 });
 
 app.get("/api/history", (req, res) => {
-    res.send(historyData.getAll());
+    res.send({
+        Success: true,
+        Data: historyData.getAll()
+    });
 })
 
 app.put("/api/vehicle/update_location", (req, res) => {
